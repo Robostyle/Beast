@@ -9,7 +9,12 @@
 #define BEAST_HTTP_FILE_BODY_HPP
 
 #include <boost/config.hpp>
-#include <beast/http/file_body_stdc.hpp>
+
+#include <beast/http/file_body_win32.hpp>
+
+#if BEAST_NO_WIN32_FILE
+# include <beast/http/file_body_stdc.hpp>
+#endif
 
 namespace beast {
 namespace http {
@@ -21,7 +26,13 @@ namespace http {
 
     Meets the requirements of @b Body.
 */
+#if ! BEAST_NO_WIN32_FILE
+using file_body = file_body_win32;
+
+#else
 using file_body = file_body_stdc;
+
+#endif
 
 } // http
 } // beast
