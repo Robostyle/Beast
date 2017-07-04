@@ -23,6 +23,7 @@ add_executable (http-tests
     field.cpp
     fields.cpp
     file_body.cpp
+    file_body_linux.cpp
     file_body_stdc.cpp
     file_body_win32.cpp
     message.cpp

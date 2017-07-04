@@ -10,6 +10,7 @@
 
 #include <boost/config.hpp>
 
+#include <beast/http/file_body_linux.hpp>
 #include <beast/http/file_body_win32.hpp>
 
 #if BEAST_NO_WIN32_FILE
@@ -26,7 +27,10 @@ namespace http {
 
     Meets the requirements of @b Body.
 */
-#if ! BEAST_NO_WIN32_FILE
+#if ! BEAST_NO_LINUX_FILE
+using file_body = file_body_linux;
+
+#elif ! BEAST_NO_WIN32_FILE
 using file_body = file_body_win32;
 
 #else
