@@ -69,6 +69,7 @@ variant ubasan
 
 project beast
   : requirements
+    <implicit-dependency>/boost//headers
     <include>.
     <include>./extras
     <include>./include

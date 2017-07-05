@@ -1,6 +1,7 @@
 Version 73:
 
 * Avoid copy constructor on Apple LLVM
+* Jamroot tweak
 
 HTTP:
 
