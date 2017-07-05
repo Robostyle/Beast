@@ -110,7 +110,7 @@ private:
         if(ec)
             return boost::none;
         res.set(http::field::content_length, res.body.size());
-        return res;
+        return {std::move(res)};
     }
 
     // Handle a request
