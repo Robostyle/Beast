@@ -130,7 +130,7 @@ public:
             boost::filesystem::path full_path = root_ / rel_path;
 
             beast::error_code ec;
-            auto res = get(req, full_path, ec);
+            auto res{get(req, full_path, ec)};
 
             if(ec == beast::errc::no_such_file_or_directory)
             {
