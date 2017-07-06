@@ -493,8 +493,12 @@ public:
         ConstBufferSequence const& buffer)
     {
         invoked = true;
+#if 0
         bytes_transferred = boost::asio::write(
             stream_, buffer, ec);
+#else
+        bytes_transferred = stream_.write_some(buffer, ec);
+#endif
     }
 };
 
@@ -534,12 +538,12 @@ write_some(SyncWriteStream& stream, serializer<
         "Body requirements not met");
     static_assert(is_body_reader<Body>::value,
         "BodyReader requirements not met");
-    detail::write_some_lambda<SyncWriteStream> f{stream};
     if(sr.is_done())
     {
         ec.assign(0, ec.category());
         return;
     }
+    detail::write_some_lambda<SyncWriteStream> f{stream};
     sr.next(ec, f);
     if(ec)
         return;
@@ -678,6 +682,7 @@ write(SyncWriteStream& stream, serializer<
     static_assert(is_sync_write_stream<SyncWriteStream>::value,
         "SyncWriteStream requirements not met");
     sr.split(false);
+#if 0
     if(sr.is_done())
     {
         ec.assign(0, ec.category());
@@ -695,6 +700,17 @@ write(SyncWriteStream& stream, serializer<
     while(! sr.is_done());
     if(sr.need_close())
         ec = error::end_of_stream;
+#else
+    do
+    {
+        write_some(stream, sr, ec);
+        if(ec)
+            return;
+    }
+    while(! sr.is_done());
+    if(sr.need_close())
+        ec = error::end_of_stream;
+#endif
 }
 
 template<class AsyncWriteStream,
